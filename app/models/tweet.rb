@@ -5,12 +5,9 @@ class Tweet < ApplicationRecord
   def add_like(user)
     Like.create(user: user, tweet: self)
   end
-  def remove_like(user)
-    Like.create(user: user, tweet: self)
-  end
 
   def remove_like(user)
-    Like.where(user: user, tweet:self).first.destroy
+    Like.where(user: user, tweet: self).first.destroy
   end
 
   def original_tweet

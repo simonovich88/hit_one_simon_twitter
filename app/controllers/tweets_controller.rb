@@ -10,14 +10,14 @@ class TweetsController < ApplicationController
 
   def like 
     if current_user
-      @tweet = Tweet.find(params[:tweer_id])
-      if @tweet.is_liked?
+      @tweet = Tweet.find(params[:tweet_id])
+      if is_liked?
         @tweet.remove_like(current_user)
       else
         @tweet.add_like(current_user)
       end
     else
-      redirect_to new_session
+      redirect_to new_session_path
     end
       redirect_to root_path
   end
@@ -26,8 +26,12 @@ class TweetsController < ApplicationController
   # GET /tweets/1.json
 
   def retweet
-    @tweet = Tweet.find(params[:tweet_id])
-    Tweet.create(contect: @tweet.contect, user_id: current_user.id , origin_tweet: @tweet.id)
+    if current_user
+      @tweet = Tweet.find(params[:tweet_id])  
+      Tweet.create(contect: @tweet.contect, user_id: current_user.id , origin_tweet: @tweet.id)
+    else
+    redirect_to new_session_path
+    end
     redirect_to root_path
   end
 
@@ -87,7 +91,7 @@ class TweetsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
 
     def is_liked?
-      Like.where(user: current_user.id, tweet: params[:tweet_id])
+      Like.where(user: current_user.id, tweet: params[:tweet_id]).exists?
     end 
 
     def set_tweet

@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2020_10_03_220138) do
 
   create_table "tweets", force: :cascade do |t|
     t.string "contect"
+    t.integer "origin_tweet"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
